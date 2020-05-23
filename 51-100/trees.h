@@ -1,15 +1,11 @@
 #ifndef _TREES
 #define _TREES
+#include "listas.h"
 
 typedef struct nodo {
   int valor;
   struct nodo *esq, *dir;
 } *ABin;
-
-typedef struct lista {
-  int valor;
-  struct lista *prox;
-} *LInt;
 
 // Funções auxiliares de teste
 ABin insere (ABin a, int x);
