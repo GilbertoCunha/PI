@@ -31,5 +31,8 @@ int drop (int n, LInt *l);
 LInt Nforward (LInt l, int N);
 int listToArray (LInt l, int v[], int N);
 LInt arrayToList (int v[], int N);
+LInt somasAcL (LInt l);
+void remreps (LInt l);
+LInt rotateL (LInt l);
 
 #endif
