@@ -21,7 +21,7 @@ void iSort (int v[], int N) {
     insere (v, i, v[i]);
 }
 
-int maxInd (int v[], int N){
+int maxInd (int v[], int N) {
   int r;
   if (N == 0) r = -1;
   else {
@@ -77,6 +77,5 @@ int isOrdered (int v[], int N) {
 }
 
 void fastbubbleSort (int v[], int N) {
-  while (!isOrdered (v, N))
-    bubble (v, N);
+  while (!isOrdered (v, N)) bubble (v, N);
 }
