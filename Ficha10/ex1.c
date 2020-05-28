@@ -45,8 +45,7 @@ Aluno *procura (Turma t, int numero) {
 int aprovados (Turma t, int numero) {
   int r = 0;
 
-  if (t == NULL) r = 0;
-  else {
+  if (t != NULL) {
     if (t->a.nota >= numero) ++r;
     r += aprovados (t->esq, numero);
     r += aprovados (t->dir, numero);

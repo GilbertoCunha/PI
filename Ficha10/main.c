@@ -14,8 +14,8 @@ int main () {
 
   // Adicionar alunos à turma
   Turma t = NULL;
-  acrescentaAluno (&t, R);
   acrescentaAluno (&t, G);
+  acrescentaAluno (&t, R);
   acrescentaAluno (&t, C);
   acrescentaAluno (&t, S);
   acrescentaAluno (&t, M);
@@ -40,7 +40,26 @@ int main () {
 
   // Determinar numero de alunos aprovados
   int pass = aprovados (t, 420);
-  printf ("\nPassaram %d alunos\n", pass);
+  printf ("\nAprovados:\n");
+  printf ("Passaram %d alunos\n\n", pass);
+
+  // Criar ficheiro
+  FILE *f;
+  f = fopen ("arvfile", "r+");
+  if (f == NULL) {
+    f = fopen ("arvfile", "w+");
+    long x = 0L;
+    fwrite (&x, sizeof (long), 1, f);
+  }
+
+  // Escrever no ficheiro
+  writeArvBalanced (f, t);
+  printf ("Turma escrita no ficheiro\n\n");
+
+  // Ler Turma do ficheiro e imprimi-la
+  Turma t1 = readArv (f);
+  printf ("Turma lida do ficheiro:\n");
+  printTurma (t1);
 
   return 0;
 }
