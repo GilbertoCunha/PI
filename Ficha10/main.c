@@ -54,12 +54,24 @@ int main () {
 
   // Escrever no ficheiro
   writeArvBalanced (f, t);
-  printf ("Turma escrita no ficheiro\n\n");
+  printf ("Turma escrita no ficheiro com sucesso\n\n");
 
   // Ler Turma do ficheiro e imprimi-la
   Turma t1 = readArv (f);
   printf ("Turma lida do ficheiro:\n");
   printTurma (t1);
+  fclose (f);
+
+  // Exercício 3
+  FILE *f1 = fopen ("file_tree", "r+");
+  if (f1 == NULL) {
+    f1 = fopen ("file_tree", "w+");
+    long x = 0L;
+    fwrite (&x, sizeof (long), 1, f1);
+  }
+  writeArvBalanced (f1, t);
+  long add_G = procuraF (f1, 1);
+  printf ("\nO Gil está no endereço %ld do ficheiro\n", add_G);
 
   return 0;
 }

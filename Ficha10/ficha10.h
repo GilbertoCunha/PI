@@ -31,4 +31,10 @@ void writeArvBalanced (FILE *f, Turma t);
 Turma readArv (FILE *f);
 void acrescentaF (FILE *f, Aluno a);
 
+// Exercício 3
+void acrescentaAlunoF (FILE *f, Aluno a);
+long procuraF (FILE *f, int numero);
+int aprovadosF (FILE *f, int numero);
+void printTurmaF (FILE *f);
+
 #endif
