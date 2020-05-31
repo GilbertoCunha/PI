@@ -73,7 +73,7 @@ int pop (Stack *s, int *x) {
     LArrays tmp = s->lista;
     s->lista = s->lista->prox;
     free (tmp);
-    s->sp = MAXc-1;
+    s->sp = BSize-1;
     *x = s->lista->valores[s->sp];
   }
   else *x = s->lista->valores[--s->sp];

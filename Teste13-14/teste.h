@@ -6,6 +6,8 @@ typedef struct slist {
   struct slist *prox;
 } Nodo, *LInt;
 
+void ShowArray (int v[], int N);
+void ShowLInt (LInt l);
 LInt fromArray (int v[], int N);
 
 #define BSize 100
@@ -18,8 +20,9 @@ typedef struct larray {
 typedef struct stack {
   int sp;
   LArrays lista;
-} Stacks;
+} Stack;
 
+void ShowStack (Stack s);
 void initStack (Stack *s);
 void push (Stack *s, int x);
 int pop (Stack *s, int *x);
@@ -29,6 +32,7 @@ typedef struct spares {
   struct spares *prox;
 } Parm, *LPares;
 
+void ShowLPares (LPares l);
 LPares zip (LInt a, LInt b, int *c);
 
 typedef struct no {
