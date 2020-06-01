@@ -4,7 +4,7 @@
 typedef struct lista {
   int valor;
   struct lista *prox;
-} Nodo, *LInt;
+} *LInt;
 
 int take (int n, LInt *l);
 

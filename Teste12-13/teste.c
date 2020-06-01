@@ -1,4 +1,6 @@
 #include "teste.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 // Exercício 1
 int take (int n, LInt *l) {
@@ -102,7 +104,7 @@ void acrescenta (LBloco *l, int n) {
     pt = &((*pt)->prox);
   }
 
-  int v = malloc (size * sizeof (int));
+  int *v = malloc (size * sizeof (int));
   toArray (*l, v);
   *l = fromArray (v, size);
 }
