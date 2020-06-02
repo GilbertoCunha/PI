@@ -53,7 +53,7 @@ void mirror (ABin *a) {
   }
 }
 
-LInt concatL (LInt a, LInt b) {
+LInt concat (LInt a, LInt b) {
   LInt r = a;
 
   if (a == NULL) r = b;
@@ -65,105 +65,71 @@ LInt concatL (LInt a, LInt b) {
   return r;
 }
 
-LInt aux_inorder (ABin a) {
-  LInt r;
-  if (a == NULL) r = NULL;
-  else {
-    r = malloc (sizeof (struct lista));
-    r->valor = a->valor;
-    r->prox = NULL;
-
-    LInt esq, dir;
-    esq = aux_inorder (a->esq);
-    dir = aux_inorder (a->dir);
-
-    r = concatL (esq, r);
-    r = concatL (r, dir);
-  }
-
-  return r;
-}
-
 // 31: 10/10
 void inorder (ABin a, LInt *l) {
-  *l = aux_inorder (a);
-}
-
-LInt aux_preorder (ABin a) {
-  LInt r;
-  if (a == NULL) r = NULL;
-  else {
-    r = malloc (sizeof (struct lista));
-    r->valor = a->valor;
-    r->prox = NULL;
-
-    LInt esq, dir;
-    esq = aux_preorder (a->esq);
-    dir = aux_preorder (a->dir);
-
-    r = concatL (r, esq);
-    r = concatL (r, dir);
+  *l = NULL;
+  if (a != NULL) {
+    inorder (a->esq, l);
+    while (*l != NULL) l = &((*l)->prox);
+    (*l) = malloc (sizeof (struct lista));
+    (*l)->valor = a->valor;
+    (*l)->prox = NULL;
+    inorder (a->dir, &((*l)->prox));
   }
-
-  return r;
 }
 
 // 32: 10/10
 void preorder (ABin a, LInt *l) {
-  *l = aux_preorder (a);
-}
-
-LInt aux_postorder (ABin a) {
-  LInt r;
-  if (a == NULL) r = NULL;
-  else {
-    r = malloc (sizeof (struct lista));
-    r->valor = a->valor;
-    r->prox = NULL;
-
-    LInt esq, dir;
-    esq = aux_postorder (a->esq);
-    dir = aux_postorder (a->dir);
-
-    r = concatL (dir, r);
-    r = concatL (esq, r);
+  *l = NULL;
+  if (a != NULL) {
+    *l = malloc (sizeof (struct lista));
+    (*l)->valor = a->valor;
+    (*l)->prox = NULL;
+    preorder (a->esq, &((*l)->prox));
+    while (*l != NULL) l = &((*l)->prox);
+    preorder (a->dir, l);
   }
-
-  return r;
 }
 
 // 33: 10/10
 void postorder (ABin a, LInt *l) {
-  *l = aux_postorder (a);
-}
-
-int min_modified (int a, int b) {
-  int r;
-  if (a == -1) r = b;
-  else if (b == -1) r = a;
-  else if (a < b) r = a;
-  else r = b;
-
-  return r;
-}
-
-int depth_aux (ABin a, int x, int count) {
-  int r;
-  if (a == NULL) r = -1;
-  else if (a->valor == x) r = count;
-  else {
-    int r_dir, r_esq;
-    r_dir = depth_aux (a->dir, x, count+1);
-    r_esq = depth_aux (a->esq, x, count+1);
-    r = min_modified (r_dir, r_esq);
+  *l = NULL;
+  if (a != NULL) {
+    postorder (a->esq, l);
+    while (*l != NULL) l = &((*l)->prox);
+    postorder (a->dir, l);
+    while (*l != NULL) l = &((*l)->prox);
+    *l = malloc (sizeof (struct lista));
+    (*l)->valor = a->valor;
+    (*l)->prox = NULL;
   }
+}
+
+int min (int a, int b) {
+  int r;
+
+  if (a < b) r = a;
+  else r = b;
 
   return r;
 }
 
 // 34: 10/10
 int depth (ABin a, int x) {
-  int r = depth_aux (a, x, 1);
+  int r;
+
+  if (a == NULL) r = -1;
+  else if (a->valor == x) r = 1;
+  else {
+    int r_esq = depth (a->esq, x);
+    int r_dir = depth (a->dir, x);
+
+    if (r_esq == -1 && r_dir == -1) r = -1;
+    else if (r_esq == -1) r = 1 + r_dir;
+    else if (r_dir == -1) r = 1 + r_esq;
+    else r = 1 + min (r_esq, r_dir);
+  }
+
   return r;
 }
 
@@ -208,14 +174,6 @@ int pruneAB (ABin *a, int l) {
   return r;
 }
 
-int min (int a, int b) {
-  int r;
-  if (a < b) r = a;
-  else r = b;
-
-  return r;
-}
-
 // 37: 10/10
 int iguaisAB (ABin a, ABin b) {
   int r;
@@ -245,7 +203,7 @@ LInt nivelL (ABin a, int n) {
     LInt r_dir;
     r = nivelL (a->esq, n-1);
     r_dir = nivelL (a->dir, n-1);
-    r = concatL (r, r_dir);
+    r = concat (r, r_dir);
   }
 
   return r;
@@ -338,8 +296,8 @@ int addOrd_rec (ABin *a, int x) {
     (*a)->esq = (*a)->dir = NULL;
     r = 0;
   }
-  else if (x < a->valor) r = addOrd (&((*a)->esq), x);
-  else if (x == a->valor) r = 1;
+  else if (x < (*a)->valor) r = addOrd (&((*a)->esq), x);
+  else if (x == (*a)->valor) r = 1;
   else r = addOrd (&((*a)->dir), x);
 
   return r;
@@ -408,7 +366,7 @@ int maiorAB (ABin a) {
 
 // 48: 10/10
 void removeMaiorA (ABin *a) {
-  while ((*a) != NULL && (*a)->prox != NULL)
+  while ((*a) != NULL && (*a)->dir != NULL)
     a = &((*a)->dir);
 
   if (*a != NULL) {
@@ -454,8 +412,8 @@ int deProcura (ABin a) {
   if (a == NULL) r = 1;
   else {
     int menores, maiores;
-    menores = quantosMenores (a->dir, x);
-    maiores = quantosMaiores (a->esq, x);
+    menores = quantosMenores (a->dir, a->valor);
+    maiores = quantosMaiores (a->esq, a->valor);
 
     int r_dir, r_esq;
     r_dir = deProcura (a->dir);
