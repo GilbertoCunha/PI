@@ -189,7 +189,6 @@ void addTo (Mat *m1, Mat m2) {
       nova->lcol = m2->lcol;
       nova->prox = *m1;
       *m1 = nova;
-      m1 = &((*m1)->prox);
       m2 = m2->prox;
     }
   }
@@ -197,4 +196,20 @@ void addTo (Mat *m1, Mat m2) {
   if (*m1 == NULL) *m1 = m2;
 }
 
-void transpose (Mat *m); // ???
+void transpose (Mat *m) {
+  Mat *pt = m, r = NULL;
+  int linha, coluna, valor;
+
+  while (*pt != NULL) {
+    while ((*pt)->lcol != NULL) {
+      coluna = (*pt)->linha;
+      linha = (*pt)->lcol->coluna;
+      valor = (*pt)->lcol->valor;
+      setEntry (&r, linha, coluna, valor);
+      (*pt)->lcol = (*pt)->lcol->prox;
+    }
+    pt = &((*pt)->prox);
+  }
+
+  *m = r;
+}

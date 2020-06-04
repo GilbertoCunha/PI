@@ -18,9 +18,9 @@ int main () {
   addTo (&m1, m2);
   ShowMat (m1, 3, 3);
 
-  // printf ("\nMat2 Transpose:\n");
-  // transpose (&m2);
-  // ShowMat (m2, 3, 3);
+  printf ("\nMat2 Transpose:\n");
+  transpose (&m2);
+  ShowMat (m2, 3, 3);
 
   return 0;
 }
