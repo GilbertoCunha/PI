@@ -99,14 +99,6 @@ float getEntry (Mat m, int linha, int coluna) {
   return r;
 }
 
-void new_Mat (Mat *r, float valor, int linha, int coluna) {
-  *r = malloc (sizeof (struct listaL));
-  (*r)->lcol = malloc (sizeof (struct listaC));
-  (*r)->lcol->valor = valor;
-  (*r)->linha = linha; (*r)->lcol->coluna = coluna;
-  (*r)->prox = NULL; (*r)->lcol->prox = NULL;
-}
-
 void setColumn (Colunas *c, int coluna, int valor) {
   while (*c != NULL && (*c)->coluna < coluna) c = &((*c)->prox);
 
@@ -129,14 +121,13 @@ void setColumn (Colunas *c, int coluna, int valor) {
 void setEntry (Mat *m, int linha, int coluna, float valor) {
   while (*m != NULL && linha > (*m)->linha) m = &((*m)->prox);
 
-  if (*m == NULL) {
+  if (*m == NULL || (*m)->linha != linha) {
     // Adicionar nova linha no fim
-    new_Mat (m, valor, linha, coluna);
-  }
-  else if ((*m)->linha != linha) {
-    // Adicionar nova linha no meio
-    Mat novo; new_Mat (&novo, valor, linha, coluna);
-    novo->prox = *m;
+    Mat novo = malloc (sizeof (struct listaL));
+    novo->lcol = malloc (sizeof (struct listaC));
+    novo->lcol->coluna = coluna; novo->linha = linha;
+    novo->lcol->valor = valor;
+    novo->lcol->prox = NULL; novo->prox = *m;
     *m = novo;
   }
   else setColumn (&((*m)->lcol), coluna, valor);
@@ -172,7 +163,13 @@ void addColuna (Colunas *c1, Colunas c2) {
     }
   }
 
-  if (*c1 == NULL) *c1 = c2;
+  if (*c1 == NULL && c2 != NULL) {
+    Colunas nova = malloc (sizeof (struct listaC));
+    nova->valor = c2->valor;
+    nova->coluna = c2->coluna;
+    nova->prox = NULL;
+    *c1 = nova;
+  }
 }
 
 void addTo (Mat *m1, Mat m2) {
@@ -193,7 +190,13 @@ void addTo (Mat *m1, Mat m2) {
     }
   }
 
-  if (*m1 == NULL) *m1 = m2;
+  if (*m1 == NULL && m2 != NULL) {
+    Mat nova = malloc (sizeof (struct listaL));
+    nova->linha = m2->linha;
+    nova->lcol = m2->lcol;
+    nova->prox = *m1;
+    *m1 = nova;
+  };
 }
 
 void transpose (Mat *m) {
