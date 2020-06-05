@@ -130,8 +130,7 @@ Tree next (Tree t) {
     Tree min_dir = menor (t->dir);
 
     // Se não existe, encontrar o primeiro
-    // pai cujo elemento anterior (onde)
-    // nos encontravamos é à sua esquerda
+    // pai à esquerda
     if (min_dir != NULL) r = min_dir;
     else {
       while (t->pai != NULL && t->pai->esq != t) t = t->pai;
