@@ -65,7 +65,7 @@ void removeMaiorA (ABin *a) {
 int push (StackC *s, int x) {
   int r=0;
 
-  if (s->sp == MAXc) {
+  if (s->valores == NULL && s->sp == MAXc) {
     CList novo = malloc (sizeof (struct chunk));
     if (novo == NULL) r = 1;
     else {
