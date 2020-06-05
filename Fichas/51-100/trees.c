@@ -179,7 +179,7 @@ int iguaisAB (ABin a, ABin b) {
   else if (a == NULL || b == NULL) r = 0;
   else if (a->valor == b->valor)
     r = iguaisAB (a->esq, b->esq) && iguaisAB (a->dir, b->dir);
-  else r = 1;
+  else r = 0;
 
   return r;
 }
