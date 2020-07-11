@@ -33,7 +33,6 @@ ABin cloneAB (ABin a) {
   else {
     r = malloc (sizeof (struct nodo));
     r->valor = a->valor;
-
     r->esq = cloneAB (a->esq);
     r->dir = cloneAB (a->dir);
   }
@@ -47,7 +46,6 @@ void mirror (ABin *a) {
     ABin tmp = (*a)->esq;
     (*a)->esq = (*a)->dir;
     (*a)->dir = tmp;
-
     mirror (&((*a)->dir));
     mirror (&((*a)->esq));
   }
@@ -179,13 +177,9 @@ int iguaisAB (ABin a, ABin b) {
   int r;
   if (a == NULL && b == NULL) r = 1;
   else if (a == NULL || b == NULL) r = 0;
-  else if (a->valor == b->valor) {
-    int r_esq, r_dir;
-    r_dir = iguaisAB (a->dir, b->dir);
-    r_esq = iguaisAB (a->esq, b->esq);
-    r = min (r_dir, r_esq);
-  }
-  else r = 1;
+  else if (a->valor == b->valor)
+    r = iguaisAB (a->esq, b->esq) && iguaisAB (a->dir, b->dir);
+  else r = 0;
 
   return r;
 }
@@ -415,13 +409,8 @@ int deProcura (ABin a) {
     menores = quantosMenores (a->dir, a->valor);
     maiores = quantosMaiores (a->esq, a->valor);
 
-    int r_dir, r_esq;
-    r_dir = deProcura (a->dir);
-    r_esq = deProcura (a->esq);
-
-    if (maiores == 0 && menores == 0)
-      r = min (r_dir, r_esq);
-    else r = 0;
+    if (maiores != 0 && menores != 0) r = 1;
+    else r = deProcura (a->esq) && deProcura (a->dir);
   }
 
   return r;
